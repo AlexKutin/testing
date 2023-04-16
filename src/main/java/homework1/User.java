@@ -10,8 +10,17 @@ public class User {
     private final String email;
 
     public User(String login, String email) {
+
+        if (isCorrectEmail(email)) {
+            this.email = email;
+        } else {
+            throw new InvalidEmailException("Is not correct email: " + email);
+        }
+
+        if (isEmailEqualsLogin(email, login)) {
+            throw new InvalidLoginException("Login and email does not equals: " + email);
+        }
         this.login = login;
-        this.email = email;
     }
 
     public String getLogin() {
@@ -27,11 +36,11 @@ public class User {
         email = DEFAULT_EMAIL;
     }
 
-    public static boolean isCorrectEmail(String email) {
+    private boolean isCorrectEmail(String email) {
         return email.matches("\\w+@\\w+(\\.\\w+)+");
     }
 
-    public boolean isEmailEqualsLogin() {
+    private boolean isEmailEqualsLogin(String email, String login) {
         return StringUtils.equals(email, login);
     }
 }
